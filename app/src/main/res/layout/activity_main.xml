@@ -29,7 +29,7 @@
             android:id="@+id/fun2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="y = x² + 2" />
+            android:text="y = (x + 1)² + 2" />
 
         <RadioButton
             android:id="@+id/fun3"

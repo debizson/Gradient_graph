@@ -2,6 +2,7 @@ package com.example.myapplication
 
 import android.os.Bundle
 import android.widget.Button
+import android.widget.RadioGroup
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -26,9 +27,25 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         gradientView = findViewById(R.id.gradientView)
+
+        val functionSelector = findViewById<RadioGroup>(R.id.functionSelector)
+
+        // Rádiógomb eseményfigyelő
+        functionSelector.setOnCheckedChangeListener { _, checkedId ->
+            functionType = when (checkedId) {
+                R.id.fun1 -> 0
+                R.id.fun2 -> 1
+                R.id.fun3 -> 2
+                R.id.fun4 -> 3
+                else -> 0
+            }
+            gradientView.setFunctionType(functionType) // Frissítjük a grafikát
+        }
+
         findViewById<Button>(R.id.startButton).setOnClickListener {
             val steps = gradientDescent(startX, learningRate, functionType, 0.01f)
             gradientView.animateSteps(steps)
         }
     }
 }
+

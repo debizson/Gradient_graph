@@ -1,6 +1,8 @@
 package com.example.myapplication
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -19,6 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
+
+
 class MainActivity : AppCompatActivity() {
     private lateinit var gradientView: GradientView
     private var functionType = 0
@@ -26,6 +30,28 @@ class MainActivity : AppCompatActivity() {
     private var startX = 3.0f // Fix kezdőérték
     private var isRunning = false // Eljárás futásának állapota
     private var thread: Thread? = null // Eljárás vezérlése
+
+
+
+    fun startBlinkingEffect(gradientTitle: TextView) {
+        val handler = Handler(Looper.getMainLooper())
+
+        handler.postDelayed(object : Runnable {
+            override fun run() {
+                gradientTitle.visibility = View.INVISIBLE // Elrejtjük a feliratot
+
+                handler.postDelayed({
+                    gradientTitle.visibility = View.VISIBLE // 1 másodperc múlva visszaállítjuk
+                }, 300)
+
+                handler.postDelayed(this, 5000) // 5 másodperc múlva újra elkezdődik a ciklus
+            }
+        }, 5000)
+    }
+
+
+// Hívjuk meg az animációt, amikor az Activity elindul
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +63,8 @@ class MainActivity : AppCompatActivity() {
         val currentXView = findViewById<TextView>(R.id.currentXValue)
         val endLabel = findViewById<TextView>(R.id.endLabel)
         val startButton = findViewById<Button>(R.id.startButton)
+        val gradientTitle = findViewById<TextView>(R.id.appTitle)
+        val handler = Handler(Looper.getMainLooper())
 
         // Függvény kiválasztása
         functionSelector.setOnCheckedChangeListener { _, checkedId ->
@@ -107,5 +135,7 @@ class MainActivity : AppCompatActivity() {
                 // Nem használunk `interrupt()`, így nem lép ki a program!
             }
         }
+        startBlinkingEffect(gradientTitle) // Elindítjuk az animációt
+
     }
 }

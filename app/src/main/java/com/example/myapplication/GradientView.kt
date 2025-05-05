@@ -17,6 +17,7 @@ class GradientView(context: Context, attrs: AttributeSet) : View(context, attrs)
     private var points: List<Float> = emptyList()
     private var currentStep = 0
     private var functionType = 0
+    private val handler = Handler(Looper.getMainLooper())
 
     fun setFunctionType(type: Int) {
         functionType = type
@@ -26,14 +27,18 @@ class GradientView(context: Context, attrs: AttributeSet) : View(context, attrs)
     fun animateSteps(steps: List<Float>) {
         points = steps
         currentStep = 0
-        Handler(Looper.getMainLooper()).postDelayed(::updateStep, 1000)
+        startAnimation()
+    }
+
+    private fun startAnimation() {
+        handler.postDelayed(::updateStep, 1000)
     }
 
     private fun updateStep() {
         if (currentStep < points.size) {
             invalidate()
             currentStep++
-            Handler(Looper.getMainLooper()).postDelayed(::updateStep, 1000)
+            handler.postDelayed(::updateStep, 1000) // Folyamatos frissítés 1 mp-enként
         }
     }
 
@@ -66,21 +71,16 @@ class GradientView(context: Context, attrs: AttributeSet) : View(context, attrs)
         val centerX = width / 2
         val centerY = height / 2
         val tickSize = 10f
-        val unitSize = 40f // A beosztások közötti távolság
+        val unitSize = 40f // Megnövelt távolság a tengelyen
 
-        // Tengelyek kirajzolása
-        canvas.drawLine(50f, centerY, width - 50f, centerY, paintAxes) // X tengely
-        canvas.drawLine(centerX, 50f, centerX, height - 50f, paintAxes) // Y tengely
+        // Tengelyek és beosztások kirajzolása
+        canvas.drawLine(50f, centerY, width - 50f, centerY, paintAxes)
+        canvas.drawLine(centerX, 50f, centerX, height - 50f, paintAxes)
 
-        // X és Y tengely beosztásai (1-től 10-ig)
         for (i in -10..10) {
             val xPos = centerX + i * unitSize
             val yPos = centerY - i * unitSize
-
-            // X tengely beosztásai (függőleges kis vonalak)
             canvas.drawLine(xPos, centerY - tickSize, xPos, centerY + tickSize, paintTicks)
-
-            // Y tengely beosztásai (vízszintes kis vonalak)
             canvas.drawLine(centerX - tickSize, yPos, centerX + tickSize, yPos, paintTicks)
         }
 
@@ -96,7 +96,7 @@ class GradientView(context: Context, attrs: AttributeSet) : View(context, attrs)
         }
         canvas.drawPath(path, paintFunction)
 
-        // Gradiens pontok kirajzolása
+        // Mozgó piros pont megjelenítése
         if (currentStep < points.size) {
             val x = points[currentStep]
             val fx = getFunctionValue(x, functionType)
@@ -104,11 +104,10 @@ class GradientView(context: Context, attrs: AttributeSet) : View(context, attrs)
         }
     }
 
-
     private fun getFunctionValue(x: Float, functionType: Int): Float {
         return when (functionType) {
             0 -> x * x
-            1 -> (x + 1) * (x + 1) + 2
+            1 -> x * x + 2
             2 -> 0.5f * (x * x)
             3 -> 2 * (x * x) + 2
             else -> x * x

@@ -1,8 +1,10 @@
 package com.example.myapplication
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.RadioGroup
+import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -19,8 +21,8 @@ import com.example.myapplication.ui.theme.MyApplicationTheme
 class MainActivity : AppCompatActivity() {
     private lateinit var gradientView: GradientView
     private var functionType = 0
-    private var learningRate = 1.0f
-    private var startX = 5.0f
+    private var learningRate = 0.1f
+    private var startX = 3.0f
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,10 +44,28 @@ class MainActivity : AppCompatActivity() {
             gradientView.setFunctionType(functionType) // Frissítjük a grafikát
         }
 
+        val currentXView = findViewById<TextView>(R.id.currentXValue)
+
+        val endLabel = findViewById<TextView>(R.id.endLabel)
+
         findViewById<Button>(R.id.startButton).setOnClickListener {
+            endLabel.visibility = View.GONE // Elrejtjük az "End" jelzést indításkor
             val steps = gradientDescent(startX, learningRate, functionType, 0.01f)
-            gradientView.animateSteps(steps)
+
+            Thread {
+                for (x in steps) {
+                    runOnUiThread {
+                        currentXView.text = "Aktuális x érték: ${"%.2f".format(x)}"
+                    }
+                    Thread.sleep(1000)
+                }
+                // Eljárás végén megjelenítjük az "End" feliratot
+                runOnUiThread {
+                    endLabel.visibility = View.VISIBLE
+                }
+            }.start()
         }
+
     }
 }
 

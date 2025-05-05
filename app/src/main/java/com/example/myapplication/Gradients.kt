@@ -4,7 +4,7 @@ import kotlin.math.absoluteValue
 
 fun derivative(x: Float, functionType: Int): Float {
     return when (functionType) {
-        0 -> 2 * x
+        0 -> (Math.exp(x.toDouble()) - 3).toFloat()
         1 -> 2 * (x - 1)
         2 -> x
         3 -> 4 * x

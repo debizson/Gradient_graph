@@ -1,34 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".MainActivity">
+    android:orientation="vertical"
+    android:padding="16dp">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <TextView
+        android:id="@+id/appTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gradiens eljárás"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <RadioGroup
+        android:id="@+id/functionSelector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize" />
+        <RadioButton
+            android:id="@+id/fun1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="y = x²" />
 
-    </com.google.android.material.appbar.AppBarLayout>
+        <RadioButton
+            android:id="@+id/fun2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="y = x² + 2" />
 
-    <include layout="@layout/content_main" />
+        <RadioButton
+            android:id="@+id/fun3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="y = 0.5 * x²" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="45dp"
+        <RadioButton
+            android:id="@+id/fun4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="y = 2 * x² + 2" />
+    </RadioGroup>
+
+    <RadioGroup
+        android:id="@+id/learningRateSelector"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="@dimen/fab_margin"
-        android:layout_marginBottom="16dp"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        android:orientation="vertical">
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <RadioButton
+            android:id="@+id/rate1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tanulási ráta: 1" />
+
+        <RadioButton
+            android:id="@+id/rate2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tanulási ráta: 2" />
+
+        <RadioButton
+            android:id="@+id/rate3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tanulási ráta: 3" />
+
+        <RadioButton
+            android:id="@+id/rate4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tanulási ráta: 4" />
+
+        <RadioButton
+            android:id="@+id/rate5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tanulási ráta: 5" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/startValueLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kezdő érték: 5.0"
+        android:textSize="15sp" />
+
+    <com.example.myapplication.GradientView
+        android:id="@+id/gradientView"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Más UI elemek -->
+
+            <Button
+                android:id="@+id/startButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start"/>
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

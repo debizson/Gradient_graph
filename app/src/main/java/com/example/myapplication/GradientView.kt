@@ -71,7 +71,8 @@ class GradientView(context: Context, attrs: AttributeSet) : View(context, attrs)
         val centerX = width / 2
         val centerY = height / 2
         val tickSize = 10f
-        val unitSize = 40f // Megnövelt távolság a tengelyen
+        val unitSize = 20f // Két-harmadára csökkentett egységtávolság
+// Megnövelt távolság a tengelyen
 
         // Tengelyek és beosztások kirajzolása
         canvas.drawLine(50f, centerY, width - 50f, centerY, paintAxes)

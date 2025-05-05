@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Gradiens eljárás"
-        android:textSize="22sp"
+        android:textSize="15sp"
         android:textColor="@android:color/holo_blue_dark"
         android:textStyle="bold"
         android:layout_gravity="center"/>
@@ -26,19 +26,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="y = x²"
-            android:checked="true"/>
+            android:checked="true"
+            android:layout_marginBottom="-16dp"/>
 
         <RadioButton
             android:id="@+id/fun2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="y = (x - 1)² + 2" />
+            android:text="y = (x - 1)² + 2"
+            android:layout_marginBottom="-16dp"/>
 
         <RadioButton
             android:id="@+id/fun3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="y = 0.5 * x²" />
+            android:text="y = 0.5 * x²"
+            android:layout_marginBottom="-16dp"/>
 
         <RadioButton
             android:id="@+id/fun4"
@@ -51,7 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tanulási ráta"
-        android:textSize="18sp"
+        android:textSize="12sp"
         android:textStyle="bold"/>
 
     <RadioGroup
@@ -103,7 +106,7 @@
     <com.example.myapplication.GradientView
         android:id="@+id/gradientView"
         android:layout_width="match_parent"
-        android:layout_height="400dp"/>
+        android:layout_height="250dp"/>
 
     <LinearLayout
         android:layout_width="wrap_content"

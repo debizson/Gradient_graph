@@ -3,6 +3,7 @@ package com.example.myapplication
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.activity.ComponentActivity
@@ -22,17 +23,17 @@ class MainActivity : AppCompatActivity() {
     private lateinit var gradientView: GradientView
     private var functionType = 0
     private var learningRate = 0.1f
-    private var startX = 3.0f
+    private var startX = 3.0f // Fix kezdő érték
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         gradientView = findViewById(R.id.gradientView)
-
         val functionSelector = findViewById<RadioGroup>(R.id.functionSelector)
+        val currentXView = findViewById<TextView>(R.id.currentXValue)
+        val endLabel = findViewById<TextView>(R.id.endLabel)
 
-        // Rádiógomb eseményfigyelő
         functionSelector.setOnCheckedChangeListener { _, checkedId ->
             functionType = when (checkedId) {
                 R.id.fun1 -> 0
@@ -41,17 +42,16 @@ class MainActivity : AppCompatActivity() {
                 R.id.fun4 -> 3
                 else -> 0
             }
-            gradientView.setFunctionType(functionType) // Frissítjük a grafikát
+            gradientView.setFunctionType(functionType)
         }
-
-        val currentXView = findViewById<TextView>(R.id.currentXValue)
-
-        val endLabel = findViewById<TextView>(R.id.endLabel)
 
         findViewById<Button>(R.id.startButton).setOnClickListener {
             endLabel.visibility = View.GONE // Elrejtjük az "End" jelzést indításkor
-            val steps = gradientDescent(startX, learningRate, functionType, 0.01f)
 
+            val steps = gradientDescent(startX, learningRate, functionType, 0.01f)
+            gradientView.animateSteps(steps)
+
+            // Folyamatosan frissítjük az aktuális x értéket
             Thread {
                 for (x in steps) {
                     runOnUiThread {
@@ -65,7 +65,5 @@ class MainActivity : AppCompatActivity() {
                 }
             }.start()
         }
-
     }
 }
-

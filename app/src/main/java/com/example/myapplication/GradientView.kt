@@ -87,12 +87,12 @@ class GradientView(context: Context, attrs: AttributeSet) : View(context, attrs)
 
         // Függvény kirajzolása
         val path = Path()
-        for (x in -10..10) {
-            val fx = getFunctionValue(x.toFloat(), functionType)
-            if (x == -10) {
-                path.moveTo(centerX + x * unitSize, centerY - fx * unitSize)
+        for (x in -100..100) {
+            val fx = getFunctionValue((x.toFloat()/10), functionType)
+            if (x == -100) {
+                path.moveTo(centerX + x.toFloat()/10 * unitSize, centerY - fx * unitSize)
             } else {
-                path.lineTo(centerX + x * unitSize, centerY - fx * unitSize)
+                path.lineTo(centerX + x.toFloat()/10 * unitSize, centerY - fx * unitSize)
             }
         }
         canvas.drawPath(path, paintFunction)

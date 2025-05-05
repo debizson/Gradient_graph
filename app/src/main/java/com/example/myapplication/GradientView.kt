@@ -107,7 +107,7 @@ class GradientView(context: Context, attrs: AttributeSet) : View(context, attrs)
     private fun getFunctionValue(x: Float, functionType: Int): Float {
         return when (functionType) {
             0 -> x * x
-            1 -> x * x + 2
+            1 -> (x - 1) * (x - 1) + 2
             2 -> 0.5f * (x * x)
             3 -> 2 * (x * x) + 2
             else -> x * x

@@ -62,31 +62,32 @@
             android:id="@+id/rate1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1" />
+            android:text="0,1"
+            android:checked="true"/>
 
         <RadioButton
             android:id="@+id/rate2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2" />
+            android:text="0.2" />
 
         <RadioButton
             android:id="@+id/rate3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="3" />
+            android:text="0.3" />
 
         <RadioButton
             android:id="@+id/rate4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="4" />
+            android:text="0.4" />
 
         <RadioButton
             android:id="@+id/rate5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="5" />
+            android:text="0.5" />
     </RadioGroup>
 
 
@@ -102,14 +103,31 @@
         android:layout_width="match_parent"
         android:layout_height="400dp"/>
 
-    <TextView
-        android:id="@+id/currentXValue"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Aktuális x érték: 3.0"
-        android:textSize="18sp"
-        android:textColor="@android:color/black"
-        android:layout_gravity="center"/>
+        android:orientation="horizontal"
+        android:layout_gravity="center">
+
+        <TextView
+            android:id="@+id/currentXLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Aktuális x érték: "
+            android:textSize="18sp"
+            android:textColor="@android:color/black"/>
+
+        <TextView
+            android:id="@+id/currentXValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3.0"
+            android:textSize="24sp"
+            android:textColor="@android:color/holo_green_dark"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+
 
     <TextView
         android:id="@+id/endLabel"

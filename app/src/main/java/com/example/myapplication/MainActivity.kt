@@ -23,7 +23,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var gradientView: GradientView
     private var functionType = 0
     private var learningRate = 0.1f
-    private var startX = 3.0f // Fix kezdő érték
+    private var startX = 3.0f // Fix kezdőérték
+    private var isRunning = false // Eljárás futásának állapota
+    private var thread: Thread? = null // Eljárás vezérlése
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,9 +33,12 @@ class MainActivity : AppCompatActivity() {
 
         gradientView = findViewById(R.id.gradientView)
         val functionSelector = findViewById<RadioGroup>(R.id.functionSelector)
+        val learningRateSelector = findViewById<RadioGroup>(R.id.learningRateSelector)
         val currentXView = findViewById<TextView>(R.id.currentXValue)
         val endLabel = findViewById<TextView>(R.id.endLabel)
+        val startButton = findViewById<Button>(R.id.startButton)
 
+        // Függvény kiválasztása
         functionSelector.setOnCheckedChangeListener { _, checkedId ->
             functionType = when (checkedId) {
                 R.id.fun1 -> 0
@@ -45,25 +50,62 @@ class MainActivity : AppCompatActivity() {
             gradientView.setFunctionType(functionType)
         }
 
-        findViewById<Button>(R.id.startButton).setOnClickListener {
-            endLabel.visibility = View.GONE // Elrejtjük az "End" jelzést indításkor
+        // Tanulási ráta kiválasztása
+        learningRateSelector.setOnCheckedChangeListener { _, checkedId ->
+            learningRate = when (checkedId) {
+                R.id.rate1 -> 0.1f
+                R.id.rate2 -> 0.2f
+                R.id.rate3 -> 0.3f
+                R.id.rate4 -> 0.4f
+                R.id.rate5 -> 0.5f
+                else -> 0.1f
+            }
+        }
 
-            val steps = gradientDescent(startX, learningRate, functionType, 0.01f)
-            gradientView.animateSteps(steps)
+        val currentXLabel = findViewById<TextView>(R.id.currentXLabel)
+        val currentXValue = findViewById<TextView>(R.id.currentXValue)
+        // Start / Stop gomb kezelése
+        startButton.setOnClickListener {
+            if (!isRunning) {
+                // Indítás
+                isRunning = true
+                startButton.text = "Stop"
+                endLabel.visibility = View.GONE
 
-            // Folyamatosan frissítjük az aktuális x értéket
-            Thread {
-                for (x in steps) {
-                    runOnUiThread {
-                        currentXView.text = "Aktuális x érték: ${"%.2f".format(x)}"
+                val steps = gradientDescent(startX, learningRate, functionType, 0.01f)
+                gradientView.animateSteps(steps)
+
+                thread = Thread {
+                    for (x in steps) {
+                        if (!isRunning) return@Thread // Ha leállították, kilép
+                        runOnUiThread {
+                            currentXValue.text = "%.2f".format(x) // Csak a számot frissítjük, hogy nagyobb legyen
+                        }
+                        Thread.sleep(1000)
                     }
-                    Thread.sleep(1000)
+                    runOnUiThread {
+                        endLabel.visibility = View.VISIBLE
+                        startButton.text = "Start"
+                        isRunning = false
+                    }
                 }
-                // Eljárás végén megjelenítjük az "End" feliratot
-                runOnUiThread {
-                    endLabel.visibility = View.VISIBLE
-                }
-            }.start()
+                thread?.start()
+            } else {
+                // Leállítás
+                isRunning = false
+                startButton.text = "Start"
+                endLabel.visibility = View.GONE
+
+                // Az animáció megállítása
+                gradientView.animateSteps(listOf(startX)) // Visszaállítja az eredeti pozíciót
+                currentXView.text = "Aktuális x érték: ${"%.2f".format(startX)}"
+
+                // Alapértelmezett kijelölés visszaállítása a rádiógomboknál
+                functionSelector.check(R.id.fun1)
+                learningRateSelector.check(R.id.rate1)
+
+                // Nem használunk `interrupt()`, így nem lép ki a program!
+            }
         }
     }
 }
